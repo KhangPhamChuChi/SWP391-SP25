@@ -125,7 +125,7 @@ const useAuthStore = create<AuthState>((set) => {
 
     login: async (values) => {
       try {
-        const response = await axiosInstance.post("auth/login", values, {
+        const response = await axiosInstance.post("api/auth/login", values, {
           headers: { "Content-Type": "application/json" },
         });
 

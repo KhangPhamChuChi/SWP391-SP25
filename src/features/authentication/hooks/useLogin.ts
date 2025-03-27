@@ -28,7 +28,7 @@ interface LoginVariables {
 
 const login = async (credentials: LoginVariables) => {
   const response = await axiosInstance.post<LoginResponse>(
-    "auth/login",
+    "api/auth/login",
     credentials,
     {
       headers: { "Content-Type": "application/json" },
