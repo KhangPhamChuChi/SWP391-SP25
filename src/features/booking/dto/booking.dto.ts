@@ -3,9 +3,14 @@ export interface BookingDto {
   customerId: number;
   location: string;
   date: string;
+  createdAt: string;
   status: string;
   amount: number;
   skintherapistId: number;
   serviceName: string;
-  skintherapist: string;
+  serviceId: number;
+  note: string;
+  skintherapistName: string;
+  customer: string;
+  updateAt: string;
 }

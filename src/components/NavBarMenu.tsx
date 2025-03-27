@@ -6,12 +6,28 @@ import { PagePath } from "../enums/page-path.enum";
 import { Content } from "antd/es/layout/layout";
 import Footers from "./Footer";
 import useAuthStore from "../features/authentication/hooks/useAuthStore";
+import { useGetCustomerProfile } from "../features/authentication/hooks/useGetCustomerProfile";
+import { useEffect, useState } from "react";
 
 const NavbarMenu = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
 
+  const { data: profileData } = useGetCustomerProfile(
+    user?.accountId,
+    user?.role
+  );
+
+  const profile = Array.isArray(profileData) ? profileData[0] : undefined;
+  const customers = profile?.customer?.[0] ?? null;
+
+  const [selectedKey, setSelectedKey] = useState<string>(
+    localStorage.getItem("selectedMenu") || "home"
+  );
+
   const handleMenuClick = (key: string) => {
+    setSelectedKey(key);
+    localStorage.setItem("selectedMenu", key);
     if (key === "service") {
       navigate(PagePath.SKIN_SERVICE);
     } else if (key === "blog") {
@@ -22,21 +38,27 @@ const NavbarMenu = () => {
       navigate(PagePath.PRICE_SERVICE);
     } else if (key === "home") {
       navigate(PagePath.HOME_PAGE);
-    } else if (key === "staff") {
-      navigate(PagePath.STAFF_PAGE);
-    } else if (key === "therapist") {
-      navigate(PagePath.SKIN_THERAPIST_PAGE);
+    } else if (key === "skin") {
+      navigate(PagePath.SKIN_TYPE);
     }
   };
 
+  useEffect(() => {
+    const storedMenu = localStorage.getItem("selectedMenu");
+    if (storedMenu) {
+      setSelectedKey(storedMenu);
+    }
+  }, []);
+
   const handleLogout = () => {
     logout();
-    navigate("/");
+    localStorage.removeItem("selectedMenu");
+    navigate(PagePath.ROOT);
   };
 
   const handleMenu = (key: string) => {
     if (key === "account") {
-      navigate("/Home/Profile");
+      navigate(PagePath.CUSTOMER_PROFILE);
     } else if (key === "logout") {
       logout();
       navigate(PagePath.LOGIN);
@@ -65,29 +87,16 @@ const NavbarMenu = () => {
         <div className="navbar-left">
           <Menu
             mode="horizontal"
-            defaultSelectedKeys={["home"]}
+            selectedKeys={[selectedKey]}
             className="navbar-menu"
             onClick={({ key }) => handleMenuClick(key)}
           >
-            {(!user || user?.role === "Customer" || user?.role === "") && (
-              <>
-                <Menu.Item key="home">Trang chủ</Menu.Item>
-                <Menu.Item key="service">Dịch vụ</Menu.Item>
-                <Menu.Item key="blog">Blog</Menu.Item>
-                <Menu.Item key="skin-therapist">
-                  Chuyên viên trị liệu da
-                </Menu.Item>
-                <Menu.Item key="price">Bảng giá</Menu.Item>
-              </>
-            )}
-
-            {user?.role === "Staff" && (
-              <Menu.Item key="staff">Trang làm việc</Menu.Item>
-            )}
-
-            {user?.role === "Therapist" && (
-              <Menu.Item key="therapist">Trang làm việc</Menu.Item>
-            )}
+            <Menu.Item key="home">Trang chủ</Menu.Item>
+            <Menu.Item key="service">Dịch vụ</Menu.Item>
+            <Menu.Item key="blog">Blog</Menu.Item>
+            <Menu.Item key="skin-therapist">Chuyên viên trị liệu da</Menu.Item>
+            <Menu.Item key="price">Bảng giá</Menu.Item>
+            <Menu.Item key="skin">Loại da</Menu.Item>
           </Menu>
         </div>
 
@@ -109,11 +118,25 @@ const NavbarMenu = () => {
             </>
           ) : (
             <>
-              <span style={{ marginRight: "8px" }}>{user.username}</span>
+              <span style={{ marginRight: "8px", alignContent: "center" }}>
+                {user.username}
+              </span>
               <Dropdown overlay={accountMenu}>
                 <Badge size="small">
-                  <UserOutlined
+                  {/* <UserOutlined
                     style={{ fontSize: "24px", marginLeft: "16px" }}
+                  /> */}
+                  <img
+                    src={customers?.image}
+                    style={{
+                      marginRight: "10px",
+                      width: "35px",
+                      height: "35px",
+                      borderRadius: "50%",
+                      border: "2px solid #1890ff",
+                      objectFit: "cover",
+                    }}
+                    alt="User Avatar"
                   />
                 </Badge>
               </Dropdown>

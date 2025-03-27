@@ -1,14 +1,24 @@
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Typography, Card, Divider, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { useBlogById } from "../hooks/useGetBlogId";
+import dayjs from "dayjs";
+import { useCustomers } from "../../user/hook/useGetCustomer";
 
 const { Title, Text, Paragraph } = Typography;
 
 const BlogDetail = () => {
-  const { id } = useParams();
+  const location = useLocation();
+  const { blogId } = location.state || {};
+  const { data: blog } = useBlogById(blogId || "");
+  const { data: customer } = useCustomers();
+
+  const getCustomerName = (customerId: number) => {
+    return customer?.find((c) => c.customerId === customerId)?.name;
+  };
 
   const blogDetail = {
-    id: id,
+    id: blogId,
     title:
       "Tác động của công nghệ đối với môi trường làm việc: Công nghệ đang thay đổi như thế nào",
     author: "Tracey Wilson",
@@ -36,8 +46,8 @@ const BlogDetail = () => {
       <Card
         cover={
           <img
-            alt={blogDetail.title}
-            src={blogDetail.coverImage}
+            alt={blog?.title}
+            src={blog?.image}
             style={{ width: "100%", objectFit: "cover", height: "400px" }}
           />
         }
@@ -48,7 +58,7 @@ const BlogDetail = () => {
           marginBottom: "20px",
         }}
       >
-        <Title level={2}>{blogDetail.title}</Title>
+        <Title level={2}>{blog?.title}</Title>
         <div
           style={{
             display: "flex",
@@ -58,14 +68,17 @@ const BlogDetail = () => {
         >
           <Avatar icon={<UserOutlined />} style={{ marginRight: "10px" }} />
           <Text>
-            Bởi {blogDetail.author} | {blogDetail.date}
+            Bởi{" "}
+            {blog?.customerId !== undefined
+              ? getCustomerName(blog.customerId)
+              : ""}{" "}
+            | {dayjs(blog?.createAt).format("DD [tháng] MM, YYYY")}
           </Text>
         </div>
       </Card>
 
-      {/* Nội dung bài viết */}
       <Typography>
-        <Paragraph>{blogDetail.content}</Paragraph>
+        <Paragraph>{blog?.content}</Paragraph>
         <Divider />
         <blockquote
           style={{ fontStyle: "italic", color: "#888", padding: "10px 20px" }}
@@ -79,8 +92,7 @@ const BlogDetail = () => {
         </Paragraph>
       </Typography>
 
-      {/* Hình ảnh quảng cáo */}
-      <Card
+      {/* <Card
         bordered={false}
         style={{
           marginTop: "20px",
@@ -95,7 +107,7 @@ const BlogDetail = () => {
           style={{ width: "100%", objectFit: "cover" }}
         />
         <Text type="secondary">Bạn có thể đặt quảng cáo 750x100</Text>
-      </Card>
+      </Card> */}
     </div>
   );
 };
