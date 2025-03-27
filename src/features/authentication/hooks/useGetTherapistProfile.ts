@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { SkintherapistProfileDto } from "../dto/profile.dto";
+import axiosInstance from "../../../axios";
 
 export const useGetTherapistProfile = (accountId?: number, role?: string) => {
   return useQuery({
     queryKey: ["getAccountByIdAndRole", accountId, role],
     queryFn: async () => {
       if (!accountId || !role) throw new Error("Thiếu thông tin đăng nhập");
-      const response = await axios.get<SkintherapistProfileDto[]>(
-        `https://localhost:7071/getAccountByIdAndRole/${accountId}/${role}`
+      const response = await axiosInstance.get<SkintherapistProfileDto[]>(
+        `getAccountByIdAndRole/${accountId}/${role}`
       );
       return response.data;
     },

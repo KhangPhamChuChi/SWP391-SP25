@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { SlotDto } from "../dto/slot.dto";
+import axiosInstance from "../../../axios";
 
 // API call to get booked slots
 const fetchBookedSlots = async (): Promise<SlotDto[]> => {
-  const response = await axios.get<SlotDto[]>(
-    "https://localhost:7071/api/slot/getBookedSlots"
+  const response = await axiosInstance.get<SlotDto[]>(
+    "api/slot/getBookedSlots"
   );
   return response.data;
 };

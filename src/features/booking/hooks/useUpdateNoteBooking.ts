@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../../../axios";
 
 interface MutationVariables {
   bookingId: number;
@@ -11,9 +11,7 @@ export const useUpdateNote = () => {
 
   return useMutation({
     mutationFn: async ({ bookingId, note }: MutationVariables) => {
-      await axios.put(
-        `https://localhost:7071/api/Booking/note/${bookingId}?note=${note}`
-      );
+      await axiosInstance.put(`api/Booking/note/${bookingId}?note=${note}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["note"] });

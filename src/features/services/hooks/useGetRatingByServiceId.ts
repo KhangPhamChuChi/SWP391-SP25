@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { RatingDto } from "../dto/rating.dto";
+import axiosInstance from "../../../axios";
 
 export const useRatingByServiceId = (serviceId: number) => {
   return useQuery<RatingDto, Error>({
     queryKey: ["service", serviceId],
     queryFn: async () => {
-      const response = await axios.get<RatingDto>(
-        `https://localhost:7071/api/Rating/service/${serviceId}`
+      const response = await axiosInstance.get<RatingDto>(
+        `api/Rating/service/${serviceId}`
       );
       return response.data;
     },

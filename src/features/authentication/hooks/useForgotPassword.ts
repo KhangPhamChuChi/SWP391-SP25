@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../../../axios";
 
 export interface ForgorPasswordDto {
   email: string;
@@ -8,8 +8,8 @@ export interface ForgorPasswordDto {
 export const useForgotPassword = () => {
   return useMutation({
     mutationFn: async (verifyAccount: ForgorPasswordDto) => {
-      const response = await axios.post(
-        `https://localhost:7071/api/auth/forgotPassword`,
+      const response = await axiosInstance.post(
+        `api/auth/forgotPassword`,
         verifyAccount
       );
       return response.data;

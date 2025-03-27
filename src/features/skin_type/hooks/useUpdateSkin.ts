@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { SkinDto } from "../dto/skin.dto";
+import axiosInstance from "../../../axios";
 
 interface MutationVariables {
   skintypeId: string;
@@ -15,8 +15,8 @@ export const useUpdateSkin = () => {
       skintypeId,
       data,
     }: MutationVariables): Promise<void> => {
-      await axios.put(
-        `https://localhost:7071/api/skintype/updateSkintype/${skintypeId}`,
+      await axiosInstance.put(
+        `api/skintype/updateSkintype/${skintypeId}`,
         data
       );
     },

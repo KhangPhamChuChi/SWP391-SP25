@@ -1,14 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { RatingDto } from "../dto/rating.dto";
+import axiosInstance from "../../../axios";
 
 export const useCreateRating = () => {
   return useMutation({
     mutationFn: async (newRating: RatingDto) => {
-      const response = await axios.post(
-        `https://localhost:7071/api/Rating`,
-        newRating
-      );
+      const response = await axiosInstance.post(`api/Rating`, newRating);
       return response.data;
     },
   });

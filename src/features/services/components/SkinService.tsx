@@ -20,11 +20,11 @@ import { useServices } from "../hooks/useGetService";
 import { useServiceStore } from "../hooks/useServiceStore";
 import { PagePath } from "../../../enums/page-path.enum";
 import { ServiceDto } from "../dto/get-service.dto";
-import axios from "axios";
 import { SkintypeServiceDto } from "../../services/dto/skintype-service.dto";
 import { useSkinTypes } from "../../skin_type/hooks/useGetSkin";
 import { useQuery } from "@tanstack/react-query";
 import { SkinDto } from "../../skin_type/dto/skin.dto";
+import axiosInstance from "../../../axios";
 // import { useSkintypeServiceByServiceId } from "../hooks/useGetSkintypeServiceByServiceId";
 
 const { Title, Text } = Typography;
@@ -40,8 +40,8 @@ const fetchSkinTypeByServiceId = async (
 ): Promise<number[]> => {
   try {
     console.log(`Fetching skin types for serviceId: ${serviceId}`);
-    const response = await axios.get<SkintypeServiceDto[]>(
-      `https://localhost:7071/getSkintypeServiceByServiceId/${serviceId}`
+    const response = await axiosInstance.get<SkintypeServiceDto[]>(
+      `getSkintypeServiceByServiceId/${serviceId}`
     );
     return response.data.map((item) => item.skintypeId) ?? [];
   } catch (error: unknown) {

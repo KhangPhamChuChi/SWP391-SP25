@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { BlogDto } from "../dto/blog.dto";
+import axiosInstance from "../../../axios";
 
 const fetchBlogs = async (): Promise<BlogDto[]> => {
-  const response = await axios.get<BlogDto[]>(
-    "https://localhost:7071/getAllBlogs"
-  );
+  const response = await axiosInstance.get<BlogDto[]>("getAllBlogs");
   return response.data;
 };
 

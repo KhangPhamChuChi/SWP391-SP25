@@ -6,10 +6,10 @@ import { useSubmitQuiz } from "../hooks/useSubmitQuiz";
 import { useSkinTypes } from "../../skin_type/hooks/useGetSkin";
 import { useServices } from "../../services/hooks/useGetService";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../../../style/Quiz.css";
 import { PagePath } from "../../../enums/page-path.enum";
 import { SkintypeServiceDto } from "../../services/dto/skintype-service.dto";
+import axiosInstance from "../../../axios";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -47,8 +47,8 @@ const QuizTest = () => {
     serviceId: number
   ): Promise<string[]> => {
     try {
-      const response = await axios.get<SkintypeServiceDto[]>(
-        `https://localhost:7071/getSkintypeServiceByServiceId/${serviceId}`
+      const response = await axiosInstance.get<SkintypeServiceDto[]>(
+        `getSkintypeServiceByServiceId/${serviceId}`
       );
       return response.data.map((item) => {
         const skin = skinTypeData.find((s) => s.skintypeId === item.skintypeId);

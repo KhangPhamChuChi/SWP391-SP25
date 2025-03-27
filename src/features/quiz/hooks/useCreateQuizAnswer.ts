@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { QuizAnswerDto } from "../dto/quiz-answer.dto";
+import axiosInstance from "../../../axios";
 
 export const useCreateQuizAnswer = () => {
   return useMutation({
     mutationFn: async (newQuizAnswer: QuizAnswerDto) => {
-      const response = await axios.post(
-        `https://localhost:7071/api/QuizAnswer`,
+      const response = await axiosInstance.post(
+        `api/QuizAnswer`,
         newQuizAnswer
       );
       return response.data;

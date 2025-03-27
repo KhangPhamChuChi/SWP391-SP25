@@ -1,16 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { TherapistDto } from "../dto/get-therapist.dto";
-
-const API_BASE_URL =
-  "https://localhost:7071/api/skintherapist/getSkintherapistById";
+import axiosInstance from "../../../axios";
 
 export const useTherapistById = (skintherapistId: string) => {
   return useQuery<TherapistDto, Error>({
     queryKey: ["getSkintherapistById", skintherapistId],
     queryFn: async () => {
-      const response = await axios.get<TherapistDto>(
-        `${API_BASE_URL}/${skintherapistId}`
+      const response = await axiosInstance.get<TherapistDto>(
+        `api/skintherapist/getSkintherapistById/${skintherapistId}`
       );
       return response.data;
     },

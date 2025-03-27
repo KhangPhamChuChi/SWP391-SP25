@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { BookingDto } from "../dto/booking.dto";
+import axiosInstance from "../../../axios";
 
 export const useBookingById = (bookingId: string) => {
   return useQuery<BookingDto, Error>({
     queryKey: ["getBookingById", bookingId],
     queryFn: async () => {
-      const response = await axios.get<BookingDto>(
-        `https://localhost:7071/api/Booking/getBookingById/${bookingId}`
+      const response = await axiosInstance.get<BookingDto>(
+        `api/Booking/getBookingById/${bookingId}`
       );
       return response.data;
     },

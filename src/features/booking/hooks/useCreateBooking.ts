@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { CreateBookingDto } from "../dto/create-booking.dto";
+import axiosInstance from "../../../axios";
 
 interface BookingResponse {
   message: string;
@@ -13,8 +13,8 @@ export const useCreateBooking = () => {
         throw new Error("Slot ID is required!");
       }
 
-      const response = await axios.post<BookingResponse>(
-        `https://localhost:7071/api/Booking/create-booking?slotId=${createBooking.slotId}`,
+      const response = await axiosInstance.post<BookingResponse>(
+        `api/Booking/create-booking?slotId=${createBooking.slotId}`,
         createBooking,
         { headers: { "Content-Type": "application/json" } }
       );

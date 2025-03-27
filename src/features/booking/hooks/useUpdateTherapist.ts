@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../../../axios";
 
 interface MutationVariables {
   bookingId: number;
@@ -14,8 +14,8 @@ export const useUpdateTherapist = () => {
       bookingId,
       skintherapistId,
     }: MutationVariables): Promise<void> => {
-      await axios.put(
-        `https://localhost:7071/api/Booking/skintherapist/${bookingId}?skintherapistId=${skintherapistId}`
+      await axiosInstance.put(
+        `api/Booking/skintherapist/${bookingId}?skintherapistId=${skintherapistId}`
       );
     },
     onSuccess: () => {

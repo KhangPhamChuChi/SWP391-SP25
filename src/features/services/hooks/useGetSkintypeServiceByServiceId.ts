@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { SkintypeServiceDto } from "../dto/skintype-service.dto";
+import axiosInstance from "../../../axios";
 
 export const useSkintypeServiceByServiceId = (serviceId: string) => {
   return useQuery<SkintypeServiceDto, Error>({
     queryKey: ["getSkintypeServiceByServiceId", serviceId],
     queryFn: async () => {
-      const response = await axios.get<SkintypeServiceDto>(
-        `https://localhost:7071/getSkintypeServiceByServiceId/${serviceId}`
+      const response = await axiosInstance.get<SkintypeServiceDto>(
+        `getSkintypeServiceByServiceId/${serviceId}`
       );
       return response.data;
     },

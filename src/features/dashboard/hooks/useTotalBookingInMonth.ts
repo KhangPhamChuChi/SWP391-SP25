@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../../../axios";
 
 const fetchTotalBookingsInMonth = async (): Promise<number> => {
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;
 
-  const response = await axios.get<number>(
-    `https://localhost:7071/getTotalBookingsInMonth/${year}/${month}`
+  const response = await axiosInstance.get<number>(
+    `getTotalBookingsInMonth/${year}/${month}`
   );
   return response.data;
 };

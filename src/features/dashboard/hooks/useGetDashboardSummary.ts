@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { DashboardDto } from "../dto/dashboard.dto";
+import axiosInstance from "../../../axios";
 
 const fetchDashboardSummary = async (): Promise<DashboardDto> => {
-  const response = await axios.get<DashboardDto>(
-    "https://localhost:7071/getDashboardSummary"
-  );
+  const response = await axiosInstance.get<DashboardDto>("getDashboardSummary");
   return response.data;
 };
 

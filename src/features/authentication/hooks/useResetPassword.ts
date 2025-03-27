@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../../../axios";
 
 export interface ResetPasswordDto {
   email: string;
@@ -10,8 +10,8 @@ export interface ResetPasswordDto {
 export const useResetPassword = () => {
   return useMutation({
     mutationFn: async (resetPassword: ResetPasswordDto) => {
-      const response = await axios.post(
-        `https://localhost:7071/api/auth/resetPassword`,
+      const response = await axiosInstance.post(
+        `api/auth/resetPassword`,
         resetPassword
       );
       return response.data;

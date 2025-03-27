@@ -1,14 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { BlogDto } from "../dto/blog.dto";
+import axiosInstance from "../../../axios";
 
 export const useCreateBlog = () => {
   return useMutation({
     mutationFn: async (newBlog: BlogDto) => {
-      const response = await axios.post(
-        `https://localhost:7071/createBlog`,
-        newBlog
-      );
+      const response = await axiosInstance.post(`createBlog`, newBlog);
       return response.data;
     },
   });

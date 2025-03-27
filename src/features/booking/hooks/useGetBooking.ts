@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { BookingDto } from "../dto/booking.dto";
+import axiosInstance from "../../../axios";
 
 const fetchBookings = async (): Promise<BookingDto[]> => {
-  const response = await axios.get<BookingDto[]>(
-    "https://localhost:7071/api/Booking/getAllBookings"
+  const response = await axiosInstance.get<BookingDto[]>(
+    "api/Booking/getAllBookings"
   );
   return response.data;
 };

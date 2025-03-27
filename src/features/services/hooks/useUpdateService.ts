@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { ServiceDto } from "../dto/get-service.dto";
+import axiosInstance from "../../../axios";
 
 interface MutationVariables {
   serviceId: string;
@@ -15,10 +15,7 @@ export const useUpdateService = () => {
       serviceId,
       data,
     }: MutationVariables): Promise<void> => {
-      await axios.put(
-        `https://localhost:7071/api/service/update/${serviceId}`,
-        data
-      );
+      await axiosInstance.put(`api/service/update/${serviceId}`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["update"] });

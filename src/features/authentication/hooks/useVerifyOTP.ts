@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../../../axios";
 
 export interface VerifyOTPDto {
   email: string;
@@ -9,8 +9,8 @@ export interface VerifyOTPDto {
 export const useVerifyOTP = () => {
   return useMutation({
     mutationFn: async (verifyOTP: VerifyOTPDto) => {
-      const response = await axios.post(
-        `https://localhost:7071/api/auth/verifyOtp`,
+      const response = await axiosInstance.post(
+        `api/auth/verifyOtp`,
         verifyOTP
       );
       return response.data;

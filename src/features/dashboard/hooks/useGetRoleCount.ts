@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { RoleCountDto } from "../dto/dashboard.dto";
+import axiosInstance from "../../../axios";
 
 const fetchRoleCounts = async (): Promise<RoleCountDto[]> => {
-  const response = await axios.get<RoleCountDto[]>(
-    "https://localhost:7071/getRoleCounts"
-  );
+  const response = await axiosInstance.get<RoleCountDto[]>("getRoleCounts");
   return response.data;
 };
 

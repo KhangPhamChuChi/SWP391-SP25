@@ -1,15 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { RatingDto } from "../dto/rating.dto";
+import axiosInstance from "../../../axios";
 
 const fetchAllRatings = async (): Promise<RatingDto[]> => {
-  const response = await axios.get<RatingDto[]>(
-    "https://localhost:7071/api/Rating/all"
-  );
+  const response = await axiosInstance.get<RatingDto[]>("api/Rating/all");
   return response.data;
 };
 
-// 🔍 Lấy rating theo customerId và serviceId
 const fetchRatingById = async (
   customerId?: number,
   serviceId?: number
@@ -20,11 +17,8 @@ const fetchRatingById = async (
   }
 
   try {
-    console.log(
-      `Fetching rating from: https://localhost:7071/api/Rating/${customerId}/${serviceId}`
-    );
-    const response = await axios.get<RatingDto>(
-      `https://localhost:7071/api/Rating/${customerId}/${serviceId}`
+    const response = await axiosInstance.get<RatingDto>(
+      `api/Rating/${customerId}/${serviceId}`
     );
     return response.data?.stars || 0;
   } catch (error) {

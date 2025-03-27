@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { BlogDto } from "../dto/blog.dto";
+import axiosInstance from "../../../axios";
 
 interface MutationVariables {
   blogId: string;
@@ -12,7 +13,7 @@ export const useUpdateBlog = () => {
 
   return useMutation<void, Error, MutationVariables>({
     mutationFn: async ({ blogId, data }: MutationVariables): Promise<void> => {
-      await axios.put(`https://localhost:7071/updateBlog/${blogId}`, data);
+      await axiosInstance.put(`updateBlog/${blogId}`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["update"] });

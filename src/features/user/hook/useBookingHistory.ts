@@ -1,9 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { BookingDto } from "../../booking/dto/booking.dto";
 import { useGetCustomerId } from "../../user/hook/useGetCustomerId";
-
-const API_BASE_URL = "https://localhost:7071/api/Booking";
+import axiosInstance from "../../../axios";
 
 // Hàm fetch dữ liệu booking history
 const fetchBookingHistory = async (
@@ -12,8 +10,8 @@ const fetchBookingHistory = async (
   if (!customerId || customerId <= 0) {
     throw new Error("Customer ID không hợp lệ");
   }
-  const response = await axios.get<BookingDto[]>(
-    `${API_BASE_URL}/previousBooking/${customerId}`
+  const response = await axiosInstance.get<BookingDto[]>(
+    `api/Booking/previousBooking/${customerId}`
   );
   return response.data;
 };

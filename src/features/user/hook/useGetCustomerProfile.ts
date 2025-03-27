@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { CustomerProfileDto } from "../dto/customer-profile.dto";
+import axiosInstance from "../../../axios";
 
 const fetchCustomerProfile = async (
   accountId: number,
   role: string
 ): Promise<CustomerProfileDto | null> => {
-  const response = await axios.get(
-    `https://localhost:7071/getAccountByIdAndRole/${accountId}/${role}`
+  const response = await axiosInstance.get(
+    `getAccountByIdAndRole/${accountId}/${role}`
   );
 
   if (!response.data || response.data.length === 0) {

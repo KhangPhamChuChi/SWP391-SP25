@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ScheduleDto } from "../dto/schedule.dto";
+import axiosInstance from "../../../axios";
 
 const fetchSchedule = async (): Promise<ScheduleDto[]> => {
-  const response = await axios.get<ScheduleDto[]>(
-    "https://localhost:7071/api/Schedule/getAll"
+  const response = await axiosInstance.get<ScheduleDto[]>(
+    "api/Schedule/getAll"
   );
   return response.data;
 };

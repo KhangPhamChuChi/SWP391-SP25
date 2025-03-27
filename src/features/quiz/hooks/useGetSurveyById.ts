@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../../../axios";
 
 interface GetSurveyByIdResponse {
   customersurveyId: number;
@@ -13,12 +13,9 @@ interface GetSurveyByIdResponse {
 
 const getSurveyById = async (id: number): Promise<GetSurveyByIdResponse> => {
   try {
-    const response = await axios.get(
-      `https://localhost:7071/getSurveyById/${id}`,
-      {
-        headers: { Accept: "application/json" },
-      }
-    );
+    const response = await axiosInstance.get(`getSurveyById/${id}`, {
+      headers: { Accept: "application/json" },
+    });
 
     console.log("✅ Dữ liệu nhận từ API (getSurveyById):", response.data);
     return response.data;

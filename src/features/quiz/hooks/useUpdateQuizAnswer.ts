@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { QuizAnswerDto } from "../dto/quiz-answer.dto";
+import axiosInstance from "../../../axios";
 
 interface MutationVariables {
   answerId: number;
@@ -15,10 +15,7 @@ export const useUpdateQuizAnswer = () => {
       answerId,
       data,
     }: MutationVariables): Promise<void> => {
-      await axios.put(
-        `https://localhost:7071/api/QuizAnswer/${answerId}`,
-        data
-      );
+      await axiosInstance.put(`api/QuizAnswer/${answerId}`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["QuizAnswer"] });

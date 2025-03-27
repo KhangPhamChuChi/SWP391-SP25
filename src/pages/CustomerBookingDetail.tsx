@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { Card, Spin, Alert, Button, message, Modal, Rate } from "antd";
 import { useBookingById } from "../features/booking/hooks/useGetBookingId";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import StatusTag from "../components/TagStatus";
 
@@ -13,8 +13,7 @@ import { useSlots } from "../features/services/hooks/useGetSlot";
 import { SlotDto } from "../features/services/dto/slot.dto";
 import { useTherapists } from "../features/skin_therapist/hooks/useGetTherapist";
 import { TherapistDto } from "../features/skin_therapist/dto/get-therapist.dto";
-
-const RATING_API_URL = "https://localhost:7071/api/Rating";
+import axiosInstance from "../axios";
 
 const CustomerBookingDetail = () => {
   const location = useLocation();
@@ -55,9 +54,9 @@ const CustomerBookingDetail = () => {
         throw new Error("Booking ID không hợp lệ");
       }
 
-      const cancelUrl = `https://localhost:7071/api/Booking/cancelled/${validBookingId}`;
-
-      const response = await axios.put(cancelUrl);
+      const response = await axiosInstance.put(
+        `api/Booking/cancelled/${validBookingId}`
+      );
       return response.data;
     },
     onSuccess: () => {
@@ -76,7 +75,7 @@ const CustomerBookingDetail = () => {
 
   const ratingMutation = useMutation({
     mutationFn: async (value: number) => {
-      return await axios.post(RATING_API_URL, {
+      return await axiosInstance.post("api/Rating", {
         customerId,
         stars: value,
         serviceId: booking?.serviceId,

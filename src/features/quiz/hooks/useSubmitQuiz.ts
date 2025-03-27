@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { SubmitQuizDto, SubmitQuizResponse } from "../dto/submit-survey.dto";
+import axiosInstance from "../../../axios";
 
 const submitQuiz = async (data: SubmitQuizDto): Promise<SubmitQuizResponse> => {
-  const response = await axios.post("https://localhost:7071/submit", data, {
+  const response = await axiosInstance.post("submit", data, {
     headers: { "Content-Type": "application/json" },
   });
 

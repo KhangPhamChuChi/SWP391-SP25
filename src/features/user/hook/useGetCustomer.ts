@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { CustomerDto } from "../dto/customer.dto";
+import axiosInstance from "../../../axios";
 
 const fetchCustomers = async (): Promise<CustomerDto[]> => {
-  const response = await axios.get<CustomerDto[]>(
-    "https://localhost:7071/getAllCustomers"
-  );
+  const response = await axiosInstance.get<CustomerDto[]>("getAllCustomers");
   return response.data;
 };
 

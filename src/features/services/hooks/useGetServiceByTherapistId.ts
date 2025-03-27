@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ServiceDto } from "../dto/get-service.dto";
+import axiosInstance from "../../../axios";
 
 const fetchServiceBySkinTherapistId = async (
   skintherapistId: number
 ): Promise<ServiceDto[]> => {
   if (!skintherapistId) throw new Error("SkinTherapistId is needed");
 
-  const response = await axios.get<ServiceDto[]>(
-    `https://localhost:7071/api/service/getServiceBySkintherapistId/${skintherapistId}`
+  const response = await axiosInstance.get<ServiceDto[]>(
+    `api/service/getServiceBySkintherapistId/${skintherapistId}`
   );
   return response.data;
 };
