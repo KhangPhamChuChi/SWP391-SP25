@@ -87,6 +87,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import axiosInstance from "../../../axios";
 
 interface User {
   accountId: number;
@@ -124,13 +125,9 @@ const useAuthStore = create<AuthState>((set) => {
 
     login: async (values) => {
       try {
-        const response = await axios.post(
-          "https://localhost:7071/api/auth/login",
-          values,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        const response = await axiosInstance.post("auth/login", values, {
+          headers: { "Content-Type": "application/json" },
+        });
 
         const data = response.data;
         if (data.token) {

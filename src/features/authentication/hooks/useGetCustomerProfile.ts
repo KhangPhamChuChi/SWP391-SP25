@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { CustomerProfileDto } from "../dto/profile.dto";
+import axiosInstance from "../../../axios";
 
 export const useGetCustomerProfile = (accountId?: number, role?: string) => {
   return useQuery({
     queryKey: ["getAccountByIdAndRole", accountId, role],
     queryFn: async () => {
       if (!accountId || !role) throw new Error("Thiếu thông tin đăng nhập");
-      const response = await axios.get<CustomerProfileDto[]>(
-        `https://localhost:7071/getAccountByIdAndRole/${accountId}/${role}`
+      const response = await axiosInstance.get<CustomerProfileDto[]>(
+        `${accountId}/${role}`
       );
       return response.data;
     },

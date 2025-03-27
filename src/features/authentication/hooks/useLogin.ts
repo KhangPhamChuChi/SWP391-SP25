@@ -3,6 +3,7 @@ import { App } from "antd";
 import axios, { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
 import useAuthStore from "./useAuthStore";
+import axiosInstance from "../../../axios";
 
 interface DecodedToken {
   accountId: number;
@@ -26,8 +27,8 @@ interface LoginVariables {
 }
 
 const login = async (credentials: LoginVariables) => {
-  const response = await axios.post<LoginResponse>(
-    "https://localhost:7071/api/auth/login",
+  const response = await axiosInstance.post<LoginResponse>(
+    "auth/login",
     credentials,
     {
       headers: { "Content-Type": "application/json" },
