@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { BlogDto } from "../dto/blog.dto";
 import axiosInstance from "../../../axios";
 
