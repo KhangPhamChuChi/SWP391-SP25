@@ -8,7 +8,7 @@ export const useGetCustomerProfile = (accountId?: number, role?: string) => {
     queryFn: async () => {
       if (!accountId || !role) throw new Error("Thiếu thông tin đăng nhập");
       const response = await axiosInstance.get<CustomerProfileDto[]>(
-        `${accountId}/${role}`
+        `getAccountByIdAndRole/${accountId}/${role}`
       );
       return response.data;
     },
