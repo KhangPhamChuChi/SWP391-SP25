@@ -11,6 +11,7 @@ import {
   Button,
   message,
   Input,
+  Upload,
 } from "antd";
 import {
   UserOutlined,
@@ -25,6 +26,8 @@ import useAuthStore from "../features/authentication/hooks/useAuthStore";
 import dayjs from "dayjs";
 import { useUpdateCustomer } from "../features/user/hook/useUpdateCustomer";
 import { useLocation } from "react-router-dom";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase/firebase";
 
 const { Sider, Content } = Layout;
 type TabKey = "personal" | "schedule" | "password";
@@ -37,6 +40,7 @@ const CustomerProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const [uploading, setUploading] = useState(false);
   const { mutate: updateCustomer } = useUpdateCustomer();
 
   const {
@@ -62,7 +66,45 @@ const CustomerProfile = () => {
     name: "",
     email: "",
     phoneNumber: "",
+    image: "",
   });
+
+  const handleFireBaseUpload = (file: File) => {
+    if (!file) {
+      message.error("Vui lòng chọn một hình ảnh!");
+      return;
+    }
+
+    setUploading(true);
+    const storageRef = ref(storage, `images/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress}% done`);
+      },
+      (error) => {
+        setUploading(false);
+        message.error(`Lỗi khi upload hình ảnh: ${error.message}`);
+        console.error("Upload error:", error);
+      },
+      async () => {
+        try {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          setFormData((prev) => ({ ...prev, image: downloadURL })); // Cập nhật image vào formData
+          setUploading(false);
+          message.success("Upload hình ảnh thành công!");
+        } catch (error) {
+          setUploading(false);
+          message.error("Lỗi khi lấy URL hình ảnh!");
+          console.error("Error getting download URL:", error);
+        }
+      }
+    );
+  };
 
   useEffect(() => {
     if (user?.accountId) {
@@ -76,6 +118,7 @@ const CustomerProfile = () => {
         name: customer.name || "",
         email: customer.email || "",
         phoneNumber: customer.phoneNumber || "",
+        image: customer.image || "",
       });
     }
   }, [customer]);
@@ -101,7 +144,7 @@ const CustomerProfile = () => {
         phoneNumber: Number(formData.phoneNumber.trim()),
         skintypeId: customer?.skintypeId ?? 0,
         accountId: customer?.accountId ?? profile?.accountId ?? 0,
-        image: customer?.image || "",
+        image: formData.image || "",
       };
 
       updateCustomer(updatedData);
@@ -159,71 +202,79 @@ const CustomerProfile = () => {
           >
             <Card title="Hồ sơ khách hàng" bordered={false}>
               {activeTab === "personal" && (
-                // <div style={{ textAlign: "center" }}>
-                //   <Avatar size={100} src={customers?.image} />
-                //   <h3 style={{ marginTop: 10 }}>{customers?.name}</h3>
-                //   <p>
-                //     <strong>Email:</strong> {customers?.email}
-                //   </p>
-                //   <p>
-                //     <strong>Số điện thoại:</strong> {customers?.phoneNumber}
-                //   </p>
-                //   <p>
-                //     <strong>Tên tài khoản:</strong> {profile?.accountName}
-                //   </p>
-                // </div>
                 <div style={{ textAlign: "center" }}>
-                  <Avatar size={100} src={customer?.image} />
                   {isEditing ? (
-                    <div
-                      style={{
-                        textAlign: "left",
-                        maxWidth: 400,
-                        margin: "0 auto",
-                      }}
-                    >
-                      <label>
-                        <strong>Họ và tên</strong>
-                      </label>
-                      <Input
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        style={{ marginBottom: 10 }}
-                      />
-
-                      <label>
-                        <strong>Email</strong>
-                      </label>
-                      <Input
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        style={{ marginBottom: 10 }}
-                      />
-
-                      <label>
-                        <strong>Số điện thoại</strong>
-                      </label>
-                      <Input
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        onChange={handleInputChange}
-                        style={{ marginBottom: 10 }}
-                      />
-
-                      <Button type="primary" onClick={handleUpdateClick}>
-                        Cập nhật
-                      </Button>
-                      <Button
-                        style={{ marginLeft: 10 }}
-                        onClick={handleCancelClick}
+                    <>
+                      <Upload
+                        showUploadList={false}
+                        beforeUpload={(file) => {
+                          handleFireBaseUpload(file);
+                          return false;
+                        }}
+                        accept="image/*"
+                        disabled={uploading}
                       >
-                        Hủy
-                      </Button>
-                    </div>
+                        <Avatar
+                          size={100}
+                          src={formData.image || customer?.image}
+                          style={{ cursor: "pointer" }}
+                        />
+                        {uploading && <Spin style={{ marginTop: 10 }} />}
+                      </Upload>
+                      <div
+                        style={{
+                          textAlign: "left",
+                          maxWidth: 400,
+                          margin: "0 auto",
+                        }}
+                      >
+                        <label>
+                          <strong>Họ và tên</strong>
+                        </label>
+                        <Input
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          style={{ marginBottom: 10 }}
+                        />
+
+                        <label>
+                          <strong>Email</strong>
+                        </label>
+                        <Input
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          style={{ marginBottom: 10 }}
+                        />
+
+                        <label>
+                          <strong>Số điện thoại</strong>
+                        </label>
+                        <Input
+                          name="phoneNumber"
+                          value={formData.phoneNumber}
+                          onChange={handleInputChange}
+                          style={{ marginBottom: 10 }}
+                        />
+
+                        <Button type="primary" onClick={handleUpdateClick}>
+                          Cập nhật
+                        </Button>
+                        <Button
+                          style={{ marginLeft: 10 }}
+                          onClick={handleCancelClick}
+                        >
+                          Hủy
+                        </Button>
+                      </div>
+                    </>
                   ) : (
                     <>
+                      <Avatar
+                        size={100}
+                        src={formData.image || customer?.image}
+                      />
                       <h3 style={{ marginTop: 10 }}>{formData.name}</h3>
                       <p>
                         <strong>Email:</strong> {formData.email}
