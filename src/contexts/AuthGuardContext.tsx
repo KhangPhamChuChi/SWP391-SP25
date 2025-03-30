@@ -207,8 +207,8 @@ export function AuthGuardProvider(props: AuthGuardProviderProps) {
 
     const roleRedirects: Record<UserRole, PagePath> = {
       Admin: PagePath.HOME,
-      Staff: PagePath.HOME,
-      Skintherapist: PagePath.HOME,
+      Staff: PagePath.BOOKING,
+      Skintherapist: PagePath.BOOKING,
       Customer: PagePath.HOME_PAGE,
       Manager: PagePath.HOME,
     };
@@ -232,14 +232,12 @@ export function AuthGuardProvider(props: AuthGuardProviderProps) {
         PagePath.QUIZ_MANAGEMENT,
       ],
       Staff: [
-        PagePath.HOME,
         PagePath.BOOKING,
         PagePath.SLOT_MANAGEMENT,
         PagePath.BOOKING_DETAIL,
         PagePath.SCHEDULE_FOR_STAFF_MANAGEMENT,
       ],
       Skintherapist: [
-        PagePath.HOME,
         PagePath.BOOKING,
         PagePath.BOOKING_DETAIL,
         PagePath.PROFILE,

@@ -34,12 +34,13 @@ const LoginRegister = () => {
     mutationFn: login,
     onSuccess: (response) => {
       if (response.success) {
-        if (
-          response.role === RoleCode.ADMIN ||
+        if (response.role === RoleCode.ADMIN) {
+          navigate(PagePath.HOME);
+        } else if (
           response.role === RoleCode.STAFF ||
           response.role === RoleCode.THERAPIST
         ) {
-          navigate(PagePath.HOME);
+          navigate(PagePath.BOOKING);
         } else {
           navigate(PagePath.HOME_PAGE);
         }

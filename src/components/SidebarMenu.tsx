@@ -128,11 +128,15 @@ const SidebarMenu = () => {
   ];
 
   const items2 = [
-    {
-      key: PagePath.HOME,
-      icon: <HomeOutlined />,
-      label: <Link to={PagePath.HOME}>Trang chủ</Link>,
-    },
+    ...(user?.role === RoleCode.ADMIN
+      ? [
+          {
+            key: PagePath.HOME,
+            icon: <HomeOutlined />,
+            label: <Link to={PagePath.HOME}>Trang chủ</Link>,
+          },
+        ]
+      : []),
     ...(user?.role === RoleCode.ADMIN
       ? [
           {
