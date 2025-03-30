@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -46,6 +45,13 @@ const CustomerProfile = () => {
     error,
     refetch,
   } = useGetCustomerProfile(user?.accountId, user?.role);
+
+  const {
+    data: bookings,
+    isLoading: isBookingLoading,
+    isError: isBookingError,
+    error: bookingError,
+  } = useBookingHistory();
 
   const profile = Array.isArray(profileData) ? profileData[0] : undefined;
   const customer = profile?.customer?.[0] ?? null;
@@ -119,13 +125,6 @@ const CustomerProfile = () => {
   if (error) {
     return <p className="text-red-500">Lỗi: {error.message}</p>;
   }
-
-  const {
-    data: bookings,
-    isLoading: isBookingLoading,
-    isError: isBookingError,
-    error: bookingError,
-  } = useBookingHistory();
 
   const handleNavigateToBookingDetail = (bookingId: number) => {
     navigate(`${PagePath.CUSTOMER_BOOKING_DETAIL}?tab=schedule`, {
