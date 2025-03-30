@@ -15,10 +15,10 @@ export const useUpdateService = () => {
       serviceId,
       data,
     }: MutationVariables): Promise<void> => {
-      await axiosInstance.put(`api/service/update/${serviceId}`, data);
+      await axiosInstance.put(`api/service/updateService/${serviceId}`, data);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["update"] });
+      queryClient.invalidateQueries({ queryKey: ["updateService"] });
     },
   });
 };
