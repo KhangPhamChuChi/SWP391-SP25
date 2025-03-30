@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { CustomerDto } from "../dto/customer.dto";
+import axiosInstance from "../../../axios";
 
 // 🛠 Hook cập nhật khách hàng
 export const useUpdateCustomer = () => {
@@ -15,8 +15,8 @@ export const useUpdateCustomer = () => {
       console.log("📡 Gửi yêu cầu cập nhật khách hàng:", customer);
 
       try {
-        const response = await axios.put<CustomerDto>(
-          `https://localhost:7071/updateCustomer/${customer.customerId}`,
+        const response = await axiosInstance.put<CustomerDto>(
+          `updateCustomer/${customer.customerId}`,
           customer,
           { headers: { "Content-Type": "application/json" } }
         );
