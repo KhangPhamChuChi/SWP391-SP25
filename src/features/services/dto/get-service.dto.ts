@@ -7,5 +7,6 @@ export interface ServiceDto {
   procedureDescription: string;
   image: string;
   createdAt: Date;
+  status: string;
   averageStars: number;
 }
