@@ -20,7 +20,6 @@ import {
 import { useServices } from "../hooks/useGetService";
 import { useServiceStore } from "../hooks/useServiceStore";
 import {
-  DeleteOutlined,
   EditOutlined,
   PlusOutlined,
   SearchOutlined,
@@ -28,7 +27,6 @@ import {
 } from "@ant-design/icons";
 import { useCreateService } from "../hooks/useCreateService";
 import { useUpdateService } from "../hooks/useUpdateService";
-import { useDeleteService } from "../hooks/useDeleteService";
 import { ColumnsType } from "antd/es/table";
 import { ServiceDto } from "../dto/get-service.dto";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -39,12 +37,9 @@ const ServiceTable = () => {
   const { data, isLoading, error, refetch: refetchService } = useServices();
   const { mutate: createService } = useCreateService();
   const { mutate: updateService } = useUpdateService();
-  const { mutate: deleteService } = useDeleteService();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingService, setEditingService] = useState<any>(null);
   const [form] = Form.useForm();
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [serviceToDelete, setServiceToDelete] = useState<any>(null);
   const { services, setServices } = useServiceStore();
   const [searchText, setSearchText] = useState("");
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -130,27 +125,6 @@ const ServiceTable = () => {
     form.setFieldsValue(record);
     setIsModalOpen(true);
     setImageAsFile(null);
-  };
-
-  const handleDelete = (serviceId: string) => {
-    setServiceToDelete(serviceId);
-    setDeleteModalOpen(true);
-  };
-
-  const confirmDelete = () => {
-    if (serviceToDelete) {
-      deleteService(serviceToDelete, {
-        onSuccess: () => {
-          message.success("Xóa dịch vụ thành công");
-          setDeleteModalOpen(false);
-          setServiceToDelete(null);
-          refetchService();
-        },
-        onError: (err: { message: any }) => {
-          message.error(`Lỗi xóa dịch vụ: ${err.message}`);
-        },
-      });
-    }
   };
 
   const handleUpdate = () => {
@@ -292,12 +266,6 @@ const ServiceTable = () => {
               onClick={() => handleEdit(record)}
             />
           </Tooltip>
-          <Tooltip title="Xóa">
-            <Button
-              icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.serviceId)}
-            />
-          </Tooltip>
         </Space>
       ),
     },
@@ -437,23 +405,6 @@ const ServiceTable = () => {
             <AntInput />
           </Form.Item>
         </Form>
-      </Modal>
-
-      <Modal
-        title="Xác nhận xóa"
-        open={isDeleteModalOpen}
-        style={{ width: "max-content" }}
-        onCancel={() => setDeleteModalOpen(false)}
-        footer={[
-          <Button key="back" onClick={() => setDeleteModalOpen(false)}>
-            Hủy
-          </Button>,
-          <Button key="delete" type="primary" danger onClick={confirmDelete}>
-            Xóa
-          </Button>,
-        ]}
-      >
-        <p>Bạn có chắc chắn muốn xóa dịch vụ này không?</p>
       </Modal>
 
       <CustomUpdateStatusModal
