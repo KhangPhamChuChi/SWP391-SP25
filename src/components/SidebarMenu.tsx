@@ -170,15 +170,6 @@ const SidebarMenu = () => {
           },
         ]
       : []),
-    ...(user?.role === RoleCode.ADMIN || user?.role === RoleCode.STAFF
-      ? [
-          {
-            key: PagePath.SLOT_MANAGEMENT,
-            icon: <HourglassOutlined />,
-            label: <Link to={PagePath.SLOT_MANAGEMENT}>Quản lý slot</Link>,
-          },
-        ]
-      : []),
     ...(user?.role === RoleCode.ADMIN
       ? [
           {
@@ -231,6 +222,15 @@ const SidebarMenu = () => {
                 Lịch làm việc
               </Link>
             ),
+          },
+        ]
+      : []),
+    ...(user?.role === RoleCode.ADMIN || user?.role === RoleCode.STAFF
+      ? [
+          {
+            key: PagePath.SLOT_MANAGEMENT,
+            icon: <HourglassOutlined />,
+            label: <Link to={PagePath.SLOT_MANAGEMENT}>Quản lý slot</Link>,
           },
         ]
       : []),
