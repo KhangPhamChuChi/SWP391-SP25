@@ -1,7 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Layout, Menu, Card, Spin, Alert, Avatar, List, Button } from "antd";
+import {
+  Layout,
+  Menu,
+  Card,
+  Spin,
+  Alert,
+  Avatar,
+  List,
+  Button,
+  message,
+  Input,
+} from "antd";
 import {
   UserOutlined,
   ClockCircleOutlined,
@@ -13,28 +24,88 @@ import { BookingDto } from "../features/booking/dto/booking.dto";
 import { PagePath } from "../enums/page-path.enum";
 import useAuthStore from "../features/authentication/hooks/useAuthStore";
 import dayjs from "dayjs";
+import { useUpdateCustomer } from "../features/user/hook/useUpdateCustomer";
 import { useLocation } from "react-router-dom";
 
 const { Sider, Content } = Layout;
+type TabKey = "personal" | "schedule" | "password";
 
 const CustomerProfile = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const initialTab = searchParams.get("tab") || "personal";
-  const [activeTab, setActiveTab] = useState(initialTab);
+  const initialTab = (searchParams.get("tab") as TabKey) || "personal";
+  const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { mutate: updateCustomer } = useUpdateCustomer();
 
   const {
     data: profileData,
     isPending,
     error,
+    refetch,
   } = useGetCustomerProfile(user?.accountId, user?.role);
 
   const profile = Array.isArray(profileData) ? profileData[0] : undefined;
-  const customers = profile?.customer?.[0] ?? null;
+  const customer = profile?.customer?.[0] ?? null;
 
   console.log("Profile Data:", JSON.stringify(profileData, null, 2));
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phoneNumber: "",
+  });
+
+  useEffect(() => {
+    if (user?.accountId) {
+      refetch();
+    }
+  }, [user?.accountId, refetch]);
+
+  useEffect(() => {
+    if (customer) {
+      setFormData({
+        name: customer.name || "",
+        email: customer.email || "",
+        phoneNumber: customer.phoneNumber || "",
+      });
+    }
+  }, [customer]);
+
+  const handleTabChange = (key: string) => {
+    setActiveTab(key as TabKey);
+    navigate(`?tab=${key}`);
+  };
+
+  const handleEditClick = () => setIsEditing(true);
+  const handleCancelClick = () => setIsEditing(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdateClick = async () => {
+    try {
+      const updatedData = {
+        customerId: customer?.customerId ?? 0,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phoneNumber: Number(formData.phoneNumber.trim()),
+        skintypeId: customer?.skintypeId ?? 0,
+        accountId: customer?.accountId ?? profile?.accountId ?? 0,
+        image: customer?.image || "",
+      };
+
+      updateCustomer(updatedData);
+      message.success("Cập nhật thông tin thành công!");
+      setIsEditing(false);
+      refetch();
+    } catch {
+      message.error("Cập nhật thông tin thất bại!");
+    }
+  };
 
   if (isPending) {
     return (
@@ -69,11 +140,7 @@ const CustomerProfile = () => {
           <Menu
             mode="inline"
             selectedKeys={[activeTab]}
-            onClick={(e) => {
-              setActiveTab(e.key);
-              navigate(`?tab=${e.key}`);
-            }}
-            style={{ borderRight: 0 }}
+            onClick={(e) => handleTabChange(e.key)}
           >
             <Menu.Item key="personal" icon={<UserOutlined />}>
               Thông tin cá nhân
@@ -93,18 +160,86 @@ const CustomerProfile = () => {
           >
             <Card title="Hồ sơ khách hàng" bordered={false}>
               {activeTab === "personal" && (
+                // <div style={{ textAlign: "center" }}>
+                //   <Avatar size={100} src={customers?.image} />
+                //   <h3 style={{ marginTop: 10 }}>{customers?.name}</h3>
+                //   <p>
+                //     <strong>Email:</strong> {customers?.email}
+                //   </p>
+                //   <p>
+                //     <strong>Số điện thoại:</strong> {customers?.phoneNumber}
+                //   </p>
+                //   <p>
+                //     <strong>Tên tài khoản:</strong> {profile?.accountName}
+                //   </p>
+                // </div>
                 <div style={{ textAlign: "center" }}>
-                  <Avatar size={100} src={customers?.image} />
-                  <h3 style={{ marginTop: 10 }}>{customers?.name}</h3>
-                  <p>
-                    <strong>Email:</strong> {customers?.email}
-                  </p>
-                  <p>
-                    <strong>Số điện thoại:</strong> {customers?.phoneNumber}
-                  </p>
-                  <p>
-                    <strong>Tên tài khoản:</strong> {profile?.accountName}
-                  </p>
+                  <Avatar size={100} src={customer?.image} />
+                  {isEditing ? (
+                    <div
+                      style={{
+                        textAlign: "left",
+                        maxWidth: 400,
+                        margin: "0 auto",
+                      }}
+                    >
+                      <label>
+                        <strong>Họ và tên</strong>
+                      </label>
+                      <Input
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        style={{ marginBottom: 10 }}
+                      />
+
+                      <label>
+                        <strong>Email</strong>
+                      </label>
+                      <Input
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        style={{ marginBottom: 10 }}
+                      />
+
+                      <label>
+                        <strong>Số điện thoại</strong>
+                      </label>
+                      <Input
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleInputChange}
+                        style={{ marginBottom: 10 }}
+                      />
+
+                      <Button type="primary" onClick={handleUpdateClick}>
+                        Cập nhật
+                      </Button>
+                      <Button
+                        style={{ marginLeft: 10 }}
+                        onClick={handleCancelClick}
+                      >
+                        Hủy
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <h3 style={{ marginTop: 10 }}>{formData.name}</h3>
+                      <p>
+                        <strong>Email:</strong> {formData.email}
+                      </p>
+                      <p>
+                        <strong>Số điện thoại:</strong> {formData.phoneNumber}
+                      </p>
+                      <p>
+                        <strong>Tên tài khoản:</strong> {profile?.accountName}
+                      </p>
+                      <Button type="primary" onClick={handleEditClick}>
+                        Sửa thông tin
+                      </Button>
+                    </>
+                  )}
                 </div>
               )}
 
