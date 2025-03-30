@@ -233,7 +233,7 @@ const CustomerProfile = () => {
                         <strong>Số điện thoại:</strong> {formData.phoneNumber}
                       </p>
                       <p>
-                        <strong>Tên tài khoản:</strong> {profile?.accountName}
+                        <strong>Tên tài khoản:</strong> {formData.name}
                       </p>
                       <Button type="primary" onClick={handleEditClick}>
                         Sửa thông tin
