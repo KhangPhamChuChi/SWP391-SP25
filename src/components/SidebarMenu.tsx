@@ -115,11 +115,11 @@ const SidebarMenu = () => {
   };
 
   const items: MenuProps["items"] = [
-    {
-      key: "account",
-      label: "Thông tin tài khoản",
-      icon: <UserOutlined />,
-    },
+    // {
+    //   key: "account",
+    //   label: "Thông tin tài khoản",
+    //   icon: <UserOutlined />,
+    // },
     {
       key: "logout",
       label: <span style={{ color: "red" }}>Đăng xuất</span>,
