@@ -9,12 +9,9 @@ import {
   Select,
   Modal,
   Slider,
+  Rate,
 } from "antd";
-import {
-  FilterOutlined,
-  HeartOutlined,
-  ShoppingCartOutlined,
-} from "@ant-design/icons";
+import { FilterOutlined, InfoCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useServices } from "../hooks/useGetService";
 import { useServiceStore } from "../hooks/useServiceStore";
@@ -186,12 +183,9 @@ const SkincareServices = () => {
                 />
               }
               actions={[
-                <Button type="text" icon={<HeartOutlined />} key="wishlist">
-                  Yêu thích
-                </Button>,
                 <Button
                   type="primary"
-                  icon={<ShoppingCartOutlined />}
+                  icon={<InfoCircleFilled />}
                   key="book"
                   style={{ background: "#af8d70" }}
                   onClick={() => handleNavigate(service.serviceId)}
@@ -213,7 +207,12 @@ const SkincareServices = () => {
                   color: "#fa541c",
                 }}
               >
-                {service.price}
+                {service.price.toLocaleString()}
+              </div>
+              <div style={{ marginTop: "10px" }}>
+                <Text>Đánh giá: </Text>
+                <Rate disabled allowHalf value={service.averageStars} />
+                <Text style={{ marginLeft: 8 }}>({service.averageStars})</Text>
               </div>
             </Card>
           </Col>
