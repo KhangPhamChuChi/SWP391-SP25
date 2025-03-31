@@ -1,5 +1,5 @@
 import { Layout, Button, Card, Row, Col, Typography, Image } from "antd";
-import { RightOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import "antd/dist/reset.css";
 import "../style/HomePage.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -178,14 +178,6 @@ const HomePage = () => {
                 với công nghệ tiên tiến, mang đến sự trẻ hóa và rạng rỡ cho làn
                 da của bạn.
               </Paragraph>
-              <Button
-                type="primary"
-                size="large"
-                icon={<RightOutlined />}
-                style={{ background: "rgb(193, 154, 107)" }}
-              >
-                Đọc Thêm
-              </Button>
             </Typography>
           </Col>
         </Row>

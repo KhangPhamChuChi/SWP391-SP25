@@ -201,7 +201,13 @@ const QuizTest = () => {
               <Col key={service.serviceId} xs={24} sm={12} md={8} lg={6}>
                 <Card
                   hoverable
-                  cover={<img alt={service.name} src={service.image} />}
+                  cover={
+                    <img
+                      alt={service.name}
+                      src={service.image}
+                      style={{ height: 224 }}
+                    />
+                  }
                 >
                   <Title level={5}>{service.name}</Title>
                   <Text strong>Giá: {service.price} VNĐ</Text>

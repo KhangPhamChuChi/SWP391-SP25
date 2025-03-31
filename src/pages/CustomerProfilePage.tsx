@@ -13,11 +13,7 @@ import {
   Input,
   Upload,
 } from "antd";
-import {
-  UserOutlined,
-  ClockCircleOutlined,
-  LockOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import { useGetCustomerProfile } from "../features/authentication/hooks/useGetCustomerProfile";
 import { useBookingHistory } from "../features/user/hook/useBookingHistory";
 import { BookingDto } from "../features/booking/dto/booking.dto";
@@ -30,7 +26,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/firebase";
 
 const { Sider, Content } = Layout;
-type TabKey = "personal" | "schedule" | "password";
+type TabKey = "personal" | "schedule";
 
 const CustomerProfile = () => {
   const location = useLocation();
@@ -190,9 +186,6 @@ const CustomerProfile = () => {
             <Menu.Item key="schedule" icon={<ClockCircleOutlined />}>
               Lịch sử đặt lịch
             </Menu.Item>
-            <Menu.Item key="password" icon={<LockOutlined />}>
-              Đổi mật khẩu
-            </Menu.Item>
           </Menu>
         </Sider>
 
@@ -351,10 +344,6 @@ const CustomerProfile = () => {
                     />
                   )}
                 </>
-              )}
-
-              {activeTab === "password" && (
-                <p>Thay đổi mật khẩu của khách hàng</p>
               )}
             </Card>
           </Content>
