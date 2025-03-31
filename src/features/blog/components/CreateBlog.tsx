@@ -5,6 +5,7 @@ import { Button, Input, message, Upload, Spin, Flex } from "antd";
 import { useCreateBlog } from "../hooks/useCreateBlog";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { useGetCustomerId } from "../../user/hook/useGetCustomerId";
 import { UploadOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 
@@ -16,6 +17,7 @@ const CreateBlog = () => {
 
   const { mutate } = useCreateBlog();
   const navigate = useNavigate();
+  const { customerId } = useGetCustomerId();
 
   const handleFireBaseUpload = (file: File) => {
     if (!file) {
@@ -55,8 +57,8 @@ const CreateBlog = () => {
   };
 
   const handleCreateBlog = () => {
-    if (!title || !content || !imageUrl) {
-      message.error("Vui lòng nhập đầy đủ thông tin và tải ảnh lên!");
+    if (!title || !content || !imageUrl || !customerId) {
+      message.error("Vui lòng nhập đầy đủ thông tin!");
       return;
     }
 
@@ -65,7 +67,7 @@ const CreateBlog = () => {
         blogId: 0,
         title,
         content,
-        customerId: 1,
+        customerId,
         image: imageUrl,
         createAt: dayjs().toDate(),
       },
