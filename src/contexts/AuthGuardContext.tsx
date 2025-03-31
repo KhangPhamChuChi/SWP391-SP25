@@ -224,7 +224,7 @@ export function AuthGuardProvider(props: AuthGuardProviderProps) {
         PagePath.USER_MANAGEMENT,
         PagePath.USER_DETAIL,
         PagePath.WORK_VOLUME,
-        PagePath.PROFILE,
+        // PagePath.PROFILE,
         PagePath.SKIN_TYPE_MANAGEMENT,
         PagePath.SLOT_MANAGEMENT,
         PagePath.BLOG_MANAGEMENT,
@@ -240,7 +240,7 @@ export function AuthGuardProvider(props: AuthGuardProviderProps) {
       Skintherapist: [
         PagePath.BOOKING,
         PagePath.BOOKING_DETAIL,
-        PagePath.PROFILE,
+        // PagePath.PROFILE,
         PagePath.SCHEDULE_FOR_THERAPIST,
       ],
       Customer: [
