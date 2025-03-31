@@ -40,10 +40,6 @@ export enum PagePath {
   BLOG_MANAGEMENT = "/Home/BlogManagement",
   SCHEDULE_FOR_STAFF_MANAGEMENT = "/Home/Schedule",
   SCHEDULE_FOR_THERAPIST = "/Home/TherepistSchedule",
+  CREATE_BLOG = "/Home/CreateBlog",
   ROOT = "/",
-  // TICKET_MANAGEMENT = "/ticket-management",
-  // TIMEKEEPING_DETAIL = "/timekeeping/:code/detail",
-  // TIMEKEEPING_MANAGEMENT = "/timekeeping",
-  // USER_DETAIL = "/user-management/:id",
-  // USER_MANAGEMENT = "/user-management",
 }

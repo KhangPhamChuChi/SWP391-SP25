@@ -1,5 +1,9 @@
-import { Card, Row, Col, Typography, Avatar } from "antd";
-import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
+import { Card, Row, Col, Typography, Avatar, Button } from "antd";
+import {
+  UserOutlined,
+  CalendarOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { PagePath } from "../../../enums/page-path.enum";
 import { useBlogs } from "../hooks/useGetBlog";
@@ -7,42 +11,6 @@ import dayjs from "dayjs";
 import { useCustomers } from "../../user/hook/useGetCustomer";
 
 const { Title, Text } = Typography;
-
-// const featuredPost = {
-//   id: 0,
-//   title: "Tác Động Của Công Nghệ Đến Nơi Làm Việc: Sự Thay Đổi Ra Sao",
-//   author: "Tracey Wilson",
-//   date: "20 Tháng 8, 2022",
-//   coverImage: "https://via.placeholder.com/800x400",
-//   category: "Công Nghệ",
-// };
-
-// const blogPosts = [
-//   {
-//     id: 1,
-//     title: "Tác Động Của Công Nghệ Đến Nơi Làm Việc: Sự Thay Đổi Ra Sao",
-//     author: "Tracey Wilson",
-//     date: "20 Tháng 8, 2022",
-//     coverImage: "https://via.placeholder.com/300x200",
-//     category: "Công Nghệ",
-//   },
-//   {
-//     id: 2,
-//     title: "Cách Tăng Năng Suất Trong Môi Trường Làm Việc Từ Xa",
-//     author: "Jason Francisco",
-//     date: "20 Tháng 8, 2022",
-//     coverImage: "https://via.placeholder.com/300x200",
-//     category: "Năng Suất",
-//   },
-//   {
-//     id: 3,
-//     title: "Top 10 Điểm Đến Du Lịch Hàng Đầu Năm 2023",
-//     author: "Elizabeth Slavin",
-//     date: "30 Tháng 8, 2022",
-//     coverImage: "https://via.placeholder.com/300x200",
-//     category: "Du Lịch",
-//   },
-// ];
 
 const BlogPage = () => {
   const navigate = useNavigate();
@@ -61,8 +29,27 @@ const BlogPage = () => {
     });
   };
 
+  const handleCreateBlog = () => {
+    navigate(PagePath.CREATE_BLOG);
+  };
+
   return (
     <div style={{ padding: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: "20px",
+        }}
+      >
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={handleCreateBlog}
+        >
+          Tạo Blog
+        </Button>
+      </div>
       <div style={{ marginBottom: "30px" }}>
         <Card
           hoverable
