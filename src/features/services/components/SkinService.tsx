@@ -74,8 +74,11 @@ const SkincareServices = () => {
     queryKey: ["serviceSkinTypes", serviceData],
     queryFn: async () => {
       if (!serviceData || !skinTypes) return [];
+      const activeServices = serviceData.filter(
+        (service) => service.status === "Active" // Lọc chỉ các service có status "Active"
+      );
       return await Promise.all(
-        serviceData.map(async (service) => {
+        activeServices.map(async (service) => {
           const skinData = await fetchSkinTypeByServiceId(service.serviceId);
           const matchedSkinTypes = skinTypes.filter((st) =>
             skinData.includes(st.skintypeId)
@@ -127,7 +130,10 @@ const SkincareServices = () => {
 
   useEffect(() => {
     if (serviceData && !isLoadingService && !errorService) {
-      setServices(serviceData);
+      const activeServices = serviceData.filter(
+        (service) => service.status === "Active"
+      );
+      setServices(activeServices);
     }
   }, [serviceData, isLoadingService, errorService, setServices]);
 

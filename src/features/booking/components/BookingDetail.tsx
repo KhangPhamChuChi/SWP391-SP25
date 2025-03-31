@@ -73,9 +73,13 @@ const BookingDetail = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState<number | null>(
     null
-  ); // Lưu serviceId thay vì serviceName
+  );
   const [selectedServiceAmount, setSelectedServiceAmount] = useState<number>(0);
   const [note, setNote] = useState<string>(booking?.note || "");
+
+  const activeServiceTherapist = serviceTherapist?.filter(
+    (service) => service.status === "Active"
+  );
 
   useEffect(() => {
     if (booking?.note !== undefined) {
@@ -84,14 +88,14 @@ const BookingDetail = () => {
   }, [booking]);
 
   useEffect(() => {
-    if (booking && serviceTherapist) {
-      const currentService = serviceTherapist.find(
+    if (booking && activeServiceTherapist) {
+      const currentService = activeServiceTherapist.find(
         (s: ServiceDto) => s.name === booking.serviceName
       );
       setSelectedServiceId(currentService ? currentService.serviceId : null);
       setSelectedServiceAmount(booking.amount);
     }
-  }, [booking, serviceTherapist]);
+  }, [booking, activeServiceTherapist]);
 
   if (isLoading) {
     return <Spin size="large" />;
@@ -181,7 +185,7 @@ const BookingDetail = () => {
 
   const handleServiceChange = (serviceId: number) => {
     setSelectedServiceId(serviceId);
-    const selected = serviceTherapist?.find(
+    const selected = activeServiceTherapist?.find(
       (service: ServiceDto) => service.serviceId === serviceId
     );
     if (selected) {
@@ -283,11 +287,11 @@ const BookingDetail = () => {
           return (
             <Select
               style={{ width: "100%" }}
-              value={selectedServiceId} // Hiển thị serviceId trong Select
+              value={selectedServiceId}
               onChange={handleServiceChange}
               placeholder="Chọn dịch vụ"
             >
-              {serviceTherapist?.map((service: ServiceDto) => (
+              {activeServiceTherapist?.map((service: ServiceDto) => (
                 <Select.Option
                   key={service.serviceId}
                   value={service.serviceId}
@@ -330,7 +334,7 @@ const BookingDetail = () => {
               type="primary"
               icon={<EditOutlined />}
               onClick={() => {
-                const currentService = serviceTherapist?.find(
+                const currentService = activeServiceTherapist?.find(
                   (s: ServiceDto) => s.name === booking.serviceName
                 );
                 setSelectedServiceId(
