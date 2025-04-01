@@ -236,6 +236,7 @@ export function AuthGuardProvider(props: AuthGuardProviderProps) {
         PagePath.SLOT_MANAGEMENT,
         PagePath.BOOKING_DETAIL,
         PagePath.SCHEDULE_FOR_STAFF_MANAGEMENT,
+        PagePath.THERAPIST_MANAGEMENT,
       ],
       Skintherapist: [
         PagePath.BOOKING,

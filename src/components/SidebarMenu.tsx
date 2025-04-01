@@ -12,6 +12,7 @@ import {
   HourglassOutlined,
   SkinOutlined,
   QuestionOutlined,
+  BookOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
@@ -174,7 +175,7 @@ const SidebarMenu = () => {
       ? [
           {
             key: PagePath.BLOG_MANAGEMENT,
-            icon: <QuestionOutlined />,
+            icon: <BookOutlined />,
             label: <Link to={PagePath.BLOG_MANAGEMENT}>Quản lý blog</Link>,
           },
         ]
