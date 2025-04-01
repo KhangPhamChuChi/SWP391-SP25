@@ -213,7 +213,7 @@ const SkincareServices = () => {
                   color: "#fa541c",
                 }}
               >
-                {service.price.toLocaleString()}
+                {service.price.toLocaleString()} VNĐ
               </div>
               <div style={{ marginTop: "10px" }}>
                 <Text>Đánh giá: </Text>

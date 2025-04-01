@@ -85,7 +85,7 @@ const ServiceDetail = () => {
             <Divider />
             <div style={{ marginBottom: 16 }}>
               <DollarOutlined style={{ color: "#52c41a", marginRight: 8 }} />
-              <Text strong>Giá:</Text> {service.price.toLocaleString()} VND
+              <Text strong>Giá:</Text> {service.price.toLocaleString()} VNĐ
             </div>
             <div style={{ marginBottom: 16 }}>
               <ClockCircleOutlined
