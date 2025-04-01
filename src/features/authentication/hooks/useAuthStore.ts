@@ -153,10 +153,15 @@ const useAuthStore = create<AuthState>((set) => {
           return { success: false, message: "Login failed", role: "" };
         }
       } catch (error) {
-        const errorMessage =
+        let errorMessage =
           axios.isAxiosError(error) && error.response?.data?.message
             ? error.response.data.message
             : (error as Error).message;
+
+        if (errorMessage === "Incorrect account name or password!") {
+          errorMessage = "Tài khoản hoặc mật khẩu không đúng";
+        }
+
         set({ error: errorMessage });
         return { success: false, message: errorMessage, role: "" };
       }
