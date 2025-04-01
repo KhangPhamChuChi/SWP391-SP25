@@ -6,7 +6,7 @@ const CompleteBookingPage = () => (
   <Result
     status="success"
     title="Đặt dịch vụ thành công"
-    subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+    // subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
     extra={[
       <Link to={PagePath.HOME_PAGE}>
         <Button type="primary" key="goBack">
