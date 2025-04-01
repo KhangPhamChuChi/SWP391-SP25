@@ -7,7 +7,6 @@ import {
 import Login from "./features/authentication/components/Login";
 import Register from "./features/authentication/components/Register";
 import Home from "./pages/Home";
-import WorkVolume from "./features/work_volume/WorkVolume";
 import UserListPage from "./features/user/pages/UserListPage";
 import { PagePath } from "./enums/page-path.enum";
 import Profile from "./features/authentication/components/Profile";
@@ -64,7 +63,6 @@ const App = () => {
           <Route path={PagePath.FORBIDDEN} element={<ForbiddenPage />} />
           <Route element={<SidebarMenu />}>
             <Route path={PagePath.HOME} element={<Home />}></Route>
-            <Route path={PagePath.WORK_VOLUME} element={<WorkVolume />} />
             <Route path={PagePath.USER_MANAGEMENT} element={<UserListPage />} />
             <Route path={PagePath.PROFILE} element={<Profile />} />
             <Route path={PagePath.BOOKING} element={<BookingListTable />} />

@@ -6,7 +6,6 @@ export enum PagePath {
   RESET_PASSWORD = "/ResetPassword",
   NOT_FOUND = "/404",
   HOME = "/Home",
-  WORK_VOLUME = "/Home/Workvolume",
   USER_MANAGEMENT = "/Home/User",
   USER_DETAIL = "/Home/User/:id",
   SKIN_TYPE_MANAGEMENT = "/Home/SkintypeManagement",
