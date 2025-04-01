@@ -123,10 +123,10 @@ const CustomerBookingDetail = () => {
         style={{ maxWidth: 600, margin: "auto" }}
       >
         {isLoading ? (
-          <Spin tip="🔄 Đang tải chi tiết đặt lịch..." />
+          <Spin tip="Đang tải chi tiết đặt lịch..." />
         ) : isError ? (
           <Alert
-            message={`❌ Lỗi: ${error?.message || "Không thể tải dữ liệu"}`}
+            message={`Lỗi: ${error?.message || "Không thể tải dữ liệu"}`}
             type="error"
           />
         ) : booking ? (
