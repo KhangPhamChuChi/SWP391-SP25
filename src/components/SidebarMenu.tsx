@@ -189,21 +189,6 @@ const SidebarMenu = () => {
           },
         ]
       : []),
-    // {
-    //   key: "2",
-    //   icon: <AppstoreOutlined />,
-    //   label: "Quản lý",
-    //   children: [
-    //     {
-    //       key: PagePath.WORK_VOLUME,
-    //       label: <Link to={PagePath.WORK_VOLUME}>Bảng khối lượng</Link>,
-    //     },
-    //     {
-    //       key: PagePath.USER,
-    //       label: <Link to={PagePath.USER}>Người dùng</Link>,
-    //     },
-    //   ],
-    // },
     ...(user?.role === RoleCode.STAFF || user?.role === RoleCode.THERAPIST
       ? [
           {
@@ -232,6 +217,19 @@ const SidebarMenu = () => {
             key: PagePath.SLOT_MANAGEMENT,
             icon: <HourglassOutlined />,
             label: <Link to={PagePath.SLOT_MANAGEMENT}>Quản lý slot</Link>,
+          },
+        ]
+      : []),
+    ...(user?.role === RoleCode.STAFF
+      ? [
+          {
+            key: PagePath.THERAPIST_MANAGEMENT,
+            icon: <UserOutlined />,
+            label: (
+              <Link to={PagePath.THERAPIST_MANAGEMENT}>
+                Quản lý chuyên viên
+              </Link>
+            ),
           },
         ]
       : []),

@@ -137,7 +137,7 @@ const CustomerProfile = () => {
         customerId: customer?.customerId ?? 0,
         name: formData.name.trim(),
         email: formData.email.trim(),
-        phoneNumber: Number(formData.phoneNumber.trim()),
+        phoneNumber: formData.phoneNumber.trim(),
         skintypeId: customer?.skintypeId ?? 0,
         accountId: customer?.accountId ?? profile?.accountId ?? 0,
         image: formData.image || "",
